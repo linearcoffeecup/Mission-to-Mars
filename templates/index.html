@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Mission to Mars</title>
 
     <link rel="stylesheet" 
@@ -14,7 +15,7 @@
     
     <div class="container">
         <div class="jumbotron text-center">
-            <p><a class="btn btn-primary btn-lg" href="/scrape"
+            <p><a class="btn btn-primary btn-lg btn-block" href="/scrape"
                 role="button">Scrape New Data</a></p>
         </div>
         <!-- Mars News -->
@@ -46,7 +47,28 @@
                     {{ mars.facts | safe }}
                 </div>
             </div>
-
+            <!--Mars Hemispheres-->
+            <div class="row" id="mars-hemisphere-images">
+                <div class="col-md-8">
+                  <h2>Mars Hemisphere Images</h2>
+                  
+                    <div class="row">
+                        <div class="col-xs-8 col-sm-4">
+                        {% for hemisphere in mars.hemisphere %}
+                        <figure>
+                            <img class="img-rounded img-responsive" src="{{hemisphere.img_url}}"  >
+                            <figcaption class = "text-uppercase display-1 text-center" >
+                                <strong>
+                                {{hemisphere.title}}
+                                </strong>
+                            </figcaption>
+                        </figure> 
+                        {% endfor %}
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
     </div>
 
     

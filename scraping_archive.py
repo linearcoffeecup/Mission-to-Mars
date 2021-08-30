@@ -124,78 +124,32 @@ def mars_hemispheres(browser):
     browser.visit(url)
 
     # 2. Create a list to hold the images and titles.
-    hemisphere_image_dict = {}
-    hemi_list = []
-    img_h_soup_info_url = []
-    img_h_soup_info_name = []
+    img_h_soup_info = []
+    img_h_soup_info_url = ["","","",""]
+    img_h_soup_info_name = ["","","",""]
 
     # Write code to retrieve the image urls and titles for each hemisphere.
     html_h = browser.html
     img_h_soup = soup(html_h, 'html.parser')
 
+    counting = [0,1,2,3]
+    hemi_list = []
+    my_dictionary = {}
+
     try:
-        #Name
-        #
-        # obtain the name from the image tag
-        #this image in on the browser page at browser(url)
+    
+        for x in counting:
 
-        results_name = img_h_soup.find_all('div', class_="item")
+            img_h_soup_info = img_h_soup.find_all('img', class_='thumb')[x]
+            img_h_soup_info_url[x] = img_h_soup_info.get('src')
+            img_h_soup_info_name[x] = img_h_soup_info.get('alt').split()[0]
 
-        for name in results_name:
+            my_dictionary={"title":img_h_soup_info_name[x], "img_url": url + img_h_soup_info_url[x]}
             
-            alt_name = name.find('img', class_='thumb').get('alt').split()[0]
+            hemi_list.append(my_dictionary)
 
-            #Update the name list
-
-            img_h_soup_info_name.append(alt_name)
-
-        #URL
-        #
-        #finding the new relative url
-        #these links are on the same browser page at browser(url)
-
-        results_div = img_h_soup.find_all('div', class_="item")
-
-        for result in results_div:
-            rel_url = result.find('a', class_="itemLink product-item").get('href')
-
-            #adding the new url to the base url
-
-            new_url = f'https://marshemispheres.com/{rel_url}'
-
-            #using browser to go to the rel_url
-            #this is "clicking on the url"
-
-            browser.visit(new_url)
             
-            # Writing code to retrieve html info on a new browser page.
-
-            html_h = browser.html
-            img_h_soup = soup(html_h, 'html.parser')
-
-            #this image (.jpg) is on the browser page browser(new_url)
-            #find the .jpg by finding the img tag
-            
-            img_jpg = img_h_soup.find('img', class_ = "wide-image")
-            src_url = img_jpg.get('src')
-
-            #Mere the base url with the image source url
-            img_url = url + src_url
-            
-            #Update the url list
-
-            img_h_soup_info_url.append(img_url)
-            
-            #set browser back to url for a new name (new hemisphere)
-
-            browser.visit(url)
-
-        #Create list of dictionaries
-
-        for x in range(len(img_h_soup_info_name)):
-            hemisphere_image_dict = {"title": img_h_soup_info_name[x], "img_url": img_h_soup_info_url[x]}
-            hemi_list.append(hemisphere_image_dict)
-
+        
     except AttributeError:
         return None
 
